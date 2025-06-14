@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Employees</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            color: #007bff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            margin: 0 4px;
+            border-radius: 5px;
+        }
+
+        .pagination a:hover {
+            background-color: #f2f2f2;
+        }
+
+        .upload-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .upload-link:hover {
+            color: #0056b3;
+        }
+
+        .page-size-form {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .page-size-form label {
+            margin-right: 10px;
+        }
+
+        .filter-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .filter-buttons button {
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Show Employees</h1>
+
+    <div>
+        <form th:action="@{/employees/show}" method="get">
+            <button type="submit" name="sortBy" value="name">Sort by Name</button>
+            <button type="submit" name="sortBy" value="department">Sort by Department</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Salary</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employeePage.content}">
+            <td th:text="${employee.id}"></td>
+            <td th:text="${employee.name}"></td>
+            <td th:text="${employee.department}"></td>
+            <td th:text="${employee.salary}"></td>
+            <td>
+                <form th:action="@{/employees/{id}(id=${employee.id})}" method="post" class="actions-form">
+                    <button type="submit">Delete</button>
+                </form>
+                <form th:action="@{/employees/update/{id}(id=${employee.id})}" method="get" class="actions-form">
+                    <button type="submit">Update</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <a th:if="${employeePage.hasPrevious()}"
+           th:href="@{/employees/show(page=${employeePage.number - 1}, size=${pageSize}, sortBy=${sortBy})}">Previous</a>
+        <span th:text="'Page ' + (${employeePage.number + 1}) + ' of ' + ${employeePage.totalPages}"></span>
+        <a th:if="${employeePage.hasNext()}"
+           th:href="@{/employees/show(page=${employeePage.number + 1}, size=${pageSize}, sortBy=${sortBy})}">Next</a>
+    </div>
+
+    <form class="page-size-form" th:action="@{/employees/show}" method="get">
+        <label for="pageSize">Page Size:</label>
+        <select name="size" id="pageSize">
+            <option value="5" th:selected="${pageSize == 5}">5</option>
+            <option value="10" th:selected="${pageSize == 10}">10</option>
+            <option value="20" th:selected="${pageSize == 20}">20</option>
+        </select>
+        <input type="hidden" name="page" value="0"/>
+        <input type="hidden" name="sortBy" th:value="${sortBy}"/>
+        <button type="submit">Apply</button>
+    </form>
+
+    <a href="/employees/upload-form" class="upload-link">Upload File</a>
+</div>
+</body>
+</html>

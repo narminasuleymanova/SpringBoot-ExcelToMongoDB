@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Preview Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .btn-confirm {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .btn-confirm:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Preview Data</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Salary</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="row : ${previewData}">
+            <td th:text="${row['id']}"></td>
+            <td th:text="${row['name']}"></td>
+            <td th:text="${row['department']}"></td>
+            <td th:text="${row['salary']}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <form method="post" enctype="multipart/form-data" th:action="@{/employees/confirm}">
+        <input type="hidden" name="file" th:value="${#strings.isEmpty(previewData) ? '' : 'previewed'}" />
+        <button type="submit" class="btn-confirm">Confirm</button>
+    </form>
+    <a href="/employees/upload-form">Back to Upload Form</a>
+</div>
+</body>
+</html>

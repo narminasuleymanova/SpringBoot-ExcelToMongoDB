@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload File</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        .btn-preview, .btn-upload {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .btn-preview:hover, .btn-upload:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Upload File</h1>
+    <form method="post" enctype="multipart/form-data" th:action="@{/employees/upload}" id="fileForm">
+        <input type="file" name="file" />
+        <button type="submit" class="btn-upload">Upload</button>
+        <button type="button" class="btn-preview" onclick="previewData()">Preview</button>
+    </form>
+
+    <a href="/employees/show">Show Employees</a>
+</div>
+
+<script>
+    function previewData() {
+        document.getElementById("fileForm").submit();
+    }
+</script>
+
+</body>
+</html>
